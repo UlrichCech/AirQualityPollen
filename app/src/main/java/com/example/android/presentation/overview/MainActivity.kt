@@ -1,4 +1,4 @@
-package com.example.android.airqualitypollen
+package com.example.android.presentation.overview
 
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
@@ -9,7 +9,9 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import com.example.android.airqualitypollen.R
 import com.example.android.airqualitypollen.databinding.ActivityMainBinding
+import com.example.android.business.configuration.GlobalAppConfiguration
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,6 +20,16 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // read the AMBEE-API-Key from launch-flags: -e "AMBEE_API_KEY" "<CUSTOM-API-KEY>"
+
+        val key = if (intent?.extras != null) {
+            intent?.extras?.getString("AMBEE_API_KEY", "")
+        } else {
+            ""
+        }
+        GlobalAppConfiguration.ambeeApiKey = key!!
+
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
