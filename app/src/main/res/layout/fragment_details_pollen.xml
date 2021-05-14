@@ -1,0 +1,111 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.android.presentation.details.DetailsPollenViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayoutPollen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ProgressBar
+            android:id="@+id/spinnerPollen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="5dp"
+            android:indeterminate="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5"
+            app:spinnerGoneIfNotNull="@{viewModel.currentPollen}" />
+
+        <TextView
+            android:id="@+id/tv_grassLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:text="@string/pollen_details_label_grass"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_grass_count"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            app:formatInteger="@{viewModel.currentPollen.countGrassPollen}"
+            app:layout_constraintStart_toEndOf="@+id/tv_grassLabel"
+            app:layout_constraintTop_toTopOf="@+id/tv_grassLabel" />
+
+        <TextView
+            android:id="@+id/tv_grass_risk"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.currentPollen.riskGrassPollen}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_grass_count"
+            app:layout_constraintTop_toTopOf="@+id/tv_grass_count" />
+
+        <TextView
+            android:id="@+id/tv_treeLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/pollen_details_label_tree"
+            app:layout_constraintStart_toStartOf="@+id/tv_grassLabel"
+            app:layout_constraintTop_toBottomOf="@+id/tv_grassLabel" />
+
+        <TextView
+            android:id="@+id/tv_tree_count"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            app:formatInteger="@{viewModel.currentPollen.countTreePollen}"
+            app:layout_constraintStart_toStartOf="@+id/tv_grass_count"
+            app:layout_constraintTop_toTopOf="@+id/tv_treeLabel" />
+
+        <TextView
+            android:id="@+id/tv_tree_risk"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.currentPollen.riskTreePollen}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_tree_count"
+            app:layout_constraintTop_toTopOf="@+id/tv_tree_count" />
+
+        <TextView
+            android:id="@+id/tv_weedLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/pollen_details_label_weed"
+            app:layout_constraintStart_toStartOf="@+id/tv_treeLabel"
+            app:layout_constraintTop_toBottomOf="@+id/tv_treeLabel" />
+
+        <TextView
+            android:id="@+id/tv_weed_count"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            app:formatInteger="@{viewModel.currentPollen.countWeedPollen}"
+            app:layout_constraintStart_toStartOf="@+id/tv_tree_count"
+            app:layout_constraintTop_toTopOf="@+id/tv_weedLabel" />
+
+        <TextView
+            android:id="@+id/tv_weed_risk"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.currentPollen.riskWeedPollen}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_weed_count"
+            app:layout_constraintTop_toTopOf="@+id/tv_weed_count" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

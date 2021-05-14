@@ -1,7 +1,7 @@
 package com.example.android.business.airquality.boundary
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class AqiInfo(val pollutant: String?,

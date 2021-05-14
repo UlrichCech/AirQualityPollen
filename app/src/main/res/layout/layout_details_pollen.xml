@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.android.presentation.details.DetailsViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_no2Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/air_quality_details_label_aqiLabel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_aqi"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            app:formatDecimal="@{viewModel.currentAirQuality.aqi}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tv_pm10"
+            app:layout_constraintTop_toTopOf="@+id/tv_no2Label" />
+
+        <TextView
+            android:id="@+id/tv_pm10Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/air_quality_details_label_pollutant"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_no2Label" />
+
+        <TextView
+            android:id="@+id/tv_pm10"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            app:formatDecimal="@{viewModel.currentAirQuality.pm10}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tv_pm25"
+            app:layout_constraintTop_toTopOf="@+id/tv_pm10Label" />
+
+        <TextView
+            android:id="@+id/tv_pm25Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/air_quality_details_label_concentration"
+            app:layout_constraintStart_toStartOf="@+id/tv_pm10Label"
+            app:layout_constraintTop_toBottomOf="@+id/tv_pm10Label" />
+
+        <TextView
+            android:id="@+id/tv_pm25"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            app:formatDecimal="@{viewModel.currentAirQuality.pm25}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_pm25Label"
+            app:layout_constraintTop_toTopOf="@+id/tv_pm25Label" />
+
+        <TextView
+            android:id="@+id/tv_categoryLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/air_quality_details_label_category"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tv_pm25Label"
+            app:layout_constraintTop_toBottomOf="@+id/tv_pm25Label" />
+
+        <TextView
+            android:id="@+id/tv_category"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_pm25Label"
+            app:layout_constraintTop_toTopOf="@+id/tv_categoryLabel" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

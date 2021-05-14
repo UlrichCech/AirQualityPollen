@@ -2,7 +2,7 @@ package com.example.android.business.airquality.boundary
 
 import android.os.Parcelable
 import com.squareup.moshi.Json
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Station(@Json(name = "NO2") val no2: Double?,

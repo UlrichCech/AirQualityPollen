@@ -10,4 +10,22 @@
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="show_current_location_data">Show data for current location </string>
+    <string name="air_quality_details_label_location">Location:</string>
+    <string name="air_quality_details_label_description">Description:</string>
+    <string name="air_quality_details_label_no2">NO2:</string>
+    <string name="air_quality_details_label_pm10">PM10:</string>
+    <string name="air_quality_details_label_co">CO:</string>
+    <string name="air_quality_details_label_pm25">PM25:</string>
+    <string name="air_quality_details_label_so2">SO2:</string>
+    <string name="air_quality_details_label_ozone">Ozone:</string>
+    <string name="air_quality_details_label_aqiLabel">AQI:</string>
+    <string name="air_quality_details_label_pollutant">Pollutant:</string>
+    <string name="air_quality_details_label_concentration">Concentration:</string>
+    <string name="air_quality_details_label_category">Category:</string>
+    <string name="tab_label_air_quality">Air-Quality</string>
+    <string name="tab_label_pollen">Pollen</string>
+    <string name="pollen_details_label_grass">Grass:</string>
+    <string name="pollen_details_label_tree">Tree:</string>
+    <string name="pollen_details_label_weed">Weed:</string>
+
 </resources>
