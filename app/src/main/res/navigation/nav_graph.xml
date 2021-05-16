@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_OverviewFragment_to_DetailsFragment"
             app:destination="@id/DetailsFragment" />
+        <action
+            android:id="@+id/action_OverviewFragment_to_favoritesFragment"
+            app:destination="@id/favoritesFragment" />
     </fragment>
 
     <fragment
@@ -23,6 +26,14 @@
         <argument android:name="selectedGeoLocation" app:argType="com.example.android.business.location.boundary.GeoLocation" />
         <action
             android:id="@+id/action_DetailsFragment_to_OverviewFragment"
+            app:destination="@id/OverviewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/favoritesFragment"
+        android:name="com.example.android.presentation.favorites.FavoritesFragment"
+        android:label="FavoritesFragment" >
+        <action
+            android:id="@+id/action_favoritesFragment_to_OverviewFragment"
             app:destination="@id/OverviewFragment" />
     </fragment>
 </navigation>

@@ -18,11 +18,12 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.example.android.airqualitypollen.databinding.FragmentOverviewBinding
 import com.google.android.gms.common.api.ResolvableApiException
-import com.google.android.gms.location.*
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationSettingsRequest
 
 
 /**
@@ -61,8 +62,6 @@ class OverviewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
         viewModel.navigateToDetails.observe(viewLifecycleOwner,
             Observer<Boolean> { shouldNavigateToDetails ->
                 if (shouldNavigateToDetails == true) {
@@ -71,19 +70,21 @@ class OverviewFragment : Fragment() {
                     viewModel.onNavigateToDetailsFinished()
                 }
             })
+        viewModel.navigateToAddFavorite.observe(viewLifecycleOwner,
+            Observer<Boolean> { shouldNavigateToAddFavorite ->
+                if (shouldNavigateToAddFavorite == true) {
+                    findNavController().navigate(
+                        OverviewFragmentDirections.actionOverviewFragmentToFavoritesFragment())
+                    viewModel.onNavigateToAddFavoriteFinished()
+                }
+            })
 
         binding.btnCurrentLocation.setOnClickListener {
-            requestLastLocationOrStartLocationUpdates()
+            requestLastLocationOrStartLocationUpdates(TargetNavigation.DETAILS)
         }
-
-//        viewModel.currentAirQuality.observe(viewLifecycleOwner, Observer<AirQualityResult> { airQuality ->
-//            Log.i("UCE-OBS", airQuality.toString())
-//        })
-//        viewModel.currentPollen.observe(viewLifecycleOwner, Observer<PollenResult> { pollen ->
-//            Log.i("UCE-OBS", pollen.toString())
-//        })
-//
-//        viewModel.getAirQualityForLocation(53.699500, 10.761190)     // Ratzeburg: 53,699500, 10,761190
+        binding.btnAddFavorite.setOnClickListener {
+            requestLastLocationOrStartLocationUpdates(TargetNavigation.ADD_FAVORITE)
+        }
     }
 
     override fun onDestroyView() {
@@ -175,68 +176,61 @@ class OverviewFragment : Fragment() {
         }
     }
 
-    private fun requestLastLocationOrStartLocationUpdates() {
+    private fun requestLastLocationOrStartLocationUpdates(targetNavigation: TargetNavigation) {
         // if we don't have permission ask for it and wait until the user grants it
         if (ContextCompat.checkSelfPermission(requireContext(), LOCATION_PERMISSION)
             != PackageManager.PERMISSION_GRANTED) {
             requestLocationPermission()
             return
         }
-
         val locationManager =
-            requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager;
+            requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-            5000L, 5f, FindLocationAndRedirectListener(viewModel));
-
-
-//        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
-//        startLocationUpdates(fusedLocationClient)
-//
-//        fusedLocationClient.lastLocation.addOnCompleteListener { task ->
-//            val location: Location? = task.result
-//            if (location == null) {
-//                startLocationUpdates(fusedLocationClient)
-//            } else {
-//                viewModel.updateSelectedLocation(location)
-//            }
-//        }
-
+            5000L, 5f, FindLocationAndRedirectListener(viewModel, targetNavigation))
     }
 
     private fun requestLocationPermission() {
         requestPermissions(arrayOf(LOCATION_PERMISSION), LOCATION_PERMISSION_REQUEST)
     }
 
-    private fun startLocationUpdates(fusedLocationClient: FusedLocationProviderClient) {
-        // if we don't have permission ask for it and wait until the user grants it
-        if (ContextCompat.checkSelfPermission(
-                requireContext(), LOCATION_PERMISSION) != PackageManager.PERMISSION_GRANTED) {
-            requestLocationPermission()
-            return
-        }
-        val request = LocationRequest().setPriority(LocationRequest.PRIORITY_LOW_POWER)
-        val callback = object: LocationCallback() {
-            override fun onLocationResult(locationResult: LocationResult?) {
-                val location = locationResult?.lastLocation ?: return
-                viewModel.updateSelectedLocation(location)
-            }
-        }
-        fusedLocationClient.requestLocationUpdates(request, callback, null)
-    }
+//    private fun startLocationUpdates(fusedLocationClient: FusedLocationProviderClient) {
+//        // if we don't have permission ask for it and wait until the user grants it
+//        if (ContextCompat.checkSelfPermission(
+//                requireContext(), LOCATION_PERMISSION) != PackageManager.PERMISSION_GRANTED) {
+//            requestLocationPermission()
+//            return
+//        }
+//        val request = LocationRequest().setPriority(LocationRequest.PRIORITY_LOW_POWER)
+//        val callback = object: LocationCallback() {
+//            override fun onLocationResult(locationResult: LocationResult?) {
+//                val location = locationResult?.lastLocation ?: return
+//                viewModel.updateSelectedLocation(location)
+//            }
+//        }
+//        fusedLocationClient.requestLocationUpdates(request, callback, null)
+//    }
 
 }
 
 
-class FindLocationAndRedirectListener(private val viewModel: OverviewViewModel) : android.location.LocationListener {
+class FindLocationAndRedirectListener(private val viewModel: OverviewViewModel, private val targetNavigation: TargetNavigation) : android.location.LocationListener {
 
     override fun onLocationChanged(location: Location) {
         viewModel.updateSelectedLocation(location)
-        viewModel.onNavigateToDetailsClicked()
+        if (targetNavigation == TargetNavigation.DETAILS) {
+            viewModel.onNavigateToDetailsClicked()
+        } else if (targetNavigation == TargetNavigation.ADD_FAVORITE) {
+            viewModel.onNavigateToAddFavoriteClicked()
+        }
     }
 
     override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
         Log.i("UCE", "deprecated")
     }
+}
+
+enum class TargetNavigation {
+    DETAILS, ADD_FAVORITE
 }
 
 private const val REQUEST_FOREGROUND_ONLY_PERMISSION_REQUEST_CODE = 22

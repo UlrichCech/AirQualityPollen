@@ -8,9 +8,24 @@ import com.example.android.business.location.boundary.GeoLocation
 
 class OverviewViewModel: ViewModel() {
 
+    private val _selectedGeoLocation = MutableLiveData<GeoLocation>()
+    val selectedGeoLocation: LiveData<GeoLocation>
+        get() = _selectedGeoLocation
+
     private val _navigateToDetails = MutableLiveData<Boolean>()
     val navigateToDetails: LiveData<Boolean>
         get() = _navigateToDetails
+
+    private val _navigateToAddFavorite = MutableLiveData<Boolean>()
+    val navigateToAddFavorite: LiveData<Boolean>
+        get() = _navigateToAddFavorite
+
+
+
+
+    fun updateSelectedLocation(location: Location) {
+        _selectedGeoLocation.value = GeoLocation(location.latitude, location.longitude)
+    }
 
     fun onNavigateToDetailsClicked() {
         _navigateToDetails.value = true
@@ -20,14 +35,12 @@ class OverviewViewModel: ViewModel() {
         _navigateToDetails.value = false
     }
 
+    fun onNavigateToAddFavoriteClicked() {
+        _navigateToAddFavorite.value = true
+    }
 
-    private val _selectedGeoLocation = MutableLiveData<GeoLocation>()
-    val selectedGeoLocation: LiveData<GeoLocation>
-        get() = _selectedGeoLocation
-
-
-    fun updateSelectedLocation(location: Location) {
-        _selectedGeoLocation.value = GeoLocation(location.latitude, location.longitude)
+    fun onNavigateToAddFavoriteFinished() {
+        _navigateToAddFavorite.value = false
     }
 
 }

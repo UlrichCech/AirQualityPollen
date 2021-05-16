@@ -27,5 +27,7 @@
     <string name="pollen_details_label_grass">Grass:</string>
     <string name="pollen_details_label_tree">Tree:</string>
     <string name="pollen_details_label_weed">Weed:</string>
+    <string name="btn_save_favorite_location">Add to favorites</string>
+    <string name="btn_add_favorite">New Favorite</string>
 
 </resources>

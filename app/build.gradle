@@ -76,7 +76,7 @@ dependencies {
     kapt "androidx.room:room-compiler:2.3.0"
 
     //Coroutines Dependencies
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1"
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0'
 
     //Maps & Location
     implementation "com.google.android.gms:play-services-location:18.0.0"
@@ -84,8 +84,8 @@ dependencies {
 
     // Http/Network
     implementation "com.google.code.gson:gson:2.8.6"
-    implementation "com.squareup.moshi:moshi:1.9.3"
-    implementation "com.squareup.moshi:moshi-kotlin:1.9.3"
+    implementation 'com.squareup.moshi:moshi:1.12.0'
+    implementation 'com.squareup.moshi:moshi-kotlin:1.12.0'
     implementation "com.squareup.retrofit2:converter-moshi:2.9.0"
 
 
