@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.android.presentation.favorites.FavoritesViewModel" />
+            type="com.example.android.airqualitypollen.presentation.favorites.FavoritesViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -24,7 +24,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:context="com.example.android.presentation.overview.MainActivity"
+            tools:context=".presentation.overview.MainActivity"
             tools:layout="@layout/fragment_favorites" />
 
         <Button

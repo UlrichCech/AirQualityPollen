@@ -6,13 +6,13 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.android.presentation.details.DetailsViewModel" />
+            type="com.example.android.airqualitypollen.presentation.details.DetailsViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.example.android.presentation.details.DetailsFragment">
+        tools:context=".presentation.details.DetailsFragment">
 
         <Button
             android:id="@+id/button_second"
