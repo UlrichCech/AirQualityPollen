@@ -20,6 +20,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
+import com.example.android.airqualitypollen.business.favorites.entity.FavoriteDTO
 import com.example.android.airqualitypollen.databinding.FragmentOverviewBinding
 import com.example.android.airqualitypollen.platform.persistence.EntityManager
 import com.google.android.gms.common.api.ResolvableApiException
@@ -88,10 +89,26 @@ class OverviewFragment : Fragment() {
         binding.btnAddFavorite.setOnClickListener {
             requestLastLocationOrStartLocationUpdates(TargetNavigation.ADD_FAVORITE)
         }
-        viewModel.viewModelScope.launch {
-            val allFavorites = EntityManager.getFavoriteDao().getAllFavorites()
-            Log.i("UCE_DB", "Anzahl favorites ${allFavorites.size}")
-        }
+//        viewModel.viewModelScope.launch {
+//            val allFavorites = EntityManager.getFavoriteDao().getAllFavorites()
+//            Log.i("UCE_DB", "Anzahl favorites ${allFavorites.size}")
+//
+//            val favoriteDTO = FavoriteDTO(53.699500, 10.761190)
+//            val favorite = favoriteDTO
+//
+//            EntityManager.getFavoriteDao().saveFavorite(favorite)
+//
+//            val favorite2 = EntityManager.getFavoriteDao().getFavoriteById(favorite.id)
+//            Log.i("UCE_DB", favorite2.toString())
+//
+//            Log.i("UCE_DB", "Anzahl favorites ${EntityManager.getFavoriteDao().getAllFavorites()}")
+//
+//            EntityManager.getFavoriteDao().deleteAllFavorites()
+//
+//            Log.i("UCE_DB", "Anzahl favorites ${EntityManager.getFavoriteDao().getAllFavorites()}")
+//
+//            val a: Int
+//        }
     }
 
     override fun onDestroyView() {

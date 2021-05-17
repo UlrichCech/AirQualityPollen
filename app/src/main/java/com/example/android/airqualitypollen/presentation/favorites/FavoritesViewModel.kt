@@ -10,7 +10,7 @@ class FavoritesViewModel : ViewModel() {
     var currentMarker: Marker? = null
 
     val reminderSelectedLocationStr = MutableLiveData<String>()
-    val selectedPOI = MutableLiveData<LatLng>()
+    val selectedLatLng = MutableLiveData<LatLng>()
     val latitude = MutableLiveData<Double>()
     val longitude = MutableLiveData<Double>()
 

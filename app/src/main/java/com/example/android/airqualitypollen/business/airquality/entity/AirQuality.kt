@@ -5,7 +5,8 @@ import androidx.room.Entity
 import kotlinx.parcelize.Parcelize
 
 @Entity @Parcelize
-data class AirQuality(val no2: Double?,
+data class AirQuality(
+                      val no2: Double?,
                       val pm10: Double?,
                       val pm25: Double?,
                       val co: Double?,

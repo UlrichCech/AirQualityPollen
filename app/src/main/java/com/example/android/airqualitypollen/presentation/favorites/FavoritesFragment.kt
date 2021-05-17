@@ -6,14 +6,21 @@ import android.annotation.TargetApi
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import androidx.navigation.fragment.findNavController
 import com.example.android.airqualitypollen.R
+import com.example.android.airqualitypollen.business.airquality.boundary.AmbeeApi
+import com.example.android.airqualitypollen.business.configuration.GlobalAppConfiguration
+import com.example.android.airqualitypollen.business.favorites.entity.FavoriteDTO
 import com.example.android.airqualitypollen.databinding.FragmentFavoritesBinding
+import com.example.android.airqualitypollen.platform.persistence.EntityManager
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -22,6 +29,9 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.launch
 
 /**
  * This fragment shows a map to select a location and save it to the favorites places.
@@ -65,17 +75,47 @@ class FavoritesFragment : Fragment(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
+        binding.saveLocationButton.setOnClickListener {
+            viewModel.viewModelScope.launch {
+                val newFavorite = FavoriteDTO(
+                    latitude = viewModel.selectedLatLng.value?.latitude,
+                    longitude = viewModel.selectedLatLng.value?.longitude)
+                val r1 = async {
+                    try {
+                        val airQuality =
+                            AmbeeApi.RETROFIT_SERVICE.getAirQualityForCurrentLocation(
+                                newFavorite.latitude.toString(), newFavorite.longitude.toString(), GlobalAppConfiguration.ambeeApiKey).toEntity()
+                        newFavorite.updateAirQuality(airQuality)
+                    } catch (e: Exception) {
+                        Log.e("UCE", e.message, e)
+                    }
+                }
+                val r2 = async {
+                    try {
+                        val pollen =
+                            AmbeeApi.RETROFIT_SERVICE.getPollenForCurrentLocation(
+                                newFavorite.latitude.toString(),
+                                newFavorite.longitude.toString(),
+                                GlobalAppConfiguration.ambeeApiKey
+                            )
+                        newFavorite.updatePollen(pollen.toEntity())
+                    } catch (e: Exception) {
+                        Log.e("UCE", e.message, e)
+                    }
+                }
+                listOf(r1, r2).awaitAll()
+                EntityManager.getFavoriteDao().saveFavorite(newFavorite)
+                findNavController().navigate(FavoritesFragmentDirections.actionFavoritesFragmentToOverviewFragment())
+            }
+        }
         return binding.root
     }
 
-    private fun onLocationSelected(latLng: LatLng) {
-//        val latLng = poi.latLng
-        viewModel.latitude.value = latLng.latitude
-        viewModel.longitude.value = latLng.longitude
-        viewModel.selectedPOI.value = latLng
-//        viewModel.reminderSelectedLocationStr.value = poi.name
-//        _viewModel.navigationCommand.postValue(NavigationCommand.Back)
-    }
+//    private fun onLocationSelected(latLng: LatLng) {
+//        viewModel.latitude.value = latLng.latitude
+//        viewModel.longitude.value = latLng.longitude
+//        viewModel.selectedLatLng.value = latLng
+//    }
 
 //    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
 //        inflater.inflate(R.menu.map_options, menu)
@@ -145,9 +185,29 @@ class FavoritesFragment : Fragment(), OnMapReadyCallback {
 
         enableLocation()
 
-        setClickListeners(map)
+        map.setOnMapLongClickListener { latLng ->
+            binding.saveLocationButton.visibility = View.VISIBLE
+            map.clear()
+            viewModel.selectedLatLng.value = latLng
+            viewModel.setNewSelectedMarker(map.addMarker(
+                MarkerOptions()
+                    .position(latLng)
+            ))
+            val zoom = 16f
+            // map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom))
+        }
 
-//        setMapStyle(map)
+//            binding.saveLocationButton.visibility = View.VISIBLE
+//            map.clear()
+//            viewModel.setNewSelectedMarker(map.addMarker(
+//                MarkerOptions()
+//                    .position(latLng)
+//            ))
+//            val zoom = 16f
+//            map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom))
+//        }
+
+    //        setMapStyle(map)
     }
 
     //POI (Point of Interest) that clicks and sets a Pin displaying POI name.
@@ -178,9 +238,6 @@ class FavoritesFragment : Fragment(), OnMapReadyCallback {
             ))
             val zoom = 16f
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom))
-            binding.saveLocationButton.setOnClickListener {
-                onLocationSelected(latLng)
-            }
         }
 
     }

@@ -21,27 +21,32 @@ class FavoritesRepository(
         }
     }
 
-//    override suspend fun saveReminder(reminder: ReminderDTO) =
-//        withContext(ioDispatcher) {
-//            favoritesDao.saveReminder(reminder)
-//        }
-//
-//    override suspend fun getReminder(id: String): Result<ReminderDTO> = withContext(ioDispatcher) {
-//        try {
-//            val reminder = favoritesDao.getReminderById(id)
-//            if (reminder != null) {
-//                return@withContext Result.Success(reminder)
-//            } else {
-//                return@withContext
-//            }
-//        } catch (e: Exception) {
-//            return@withContext Result.Error(e.localizedMessage)
-//        }
-//    }
-//
-//    override suspend fun deleteAllReminders() {
-//        withContext(ioDispatcher) {
-//            favoritesDao.deleteAllReminders()
-//        }
-//    }
+    suspend fun saveFavorite(favorite: FavoriteDTO) =
+        withContext(ioDispatcher) {
+            favoritesDao.saveFavorite(favorite)
+        }
+
+    suspend fun getFavorite(id: String) : Result<FavoriteDTO> = withContext(ioDispatcher) {
+        return@withContext try {
+            val favorite = favoritesDao.getFavoriteById(id)
+            if (favorite != null) {
+                Result.success(favorite)
+            }
+            Result.failure(Exception("No favorite with the ID <$id> found."))
+        } catch (ex: Exception) {
+            Result.failure(ex)
+        }
+    }
+
+    suspend fun deleteReminderById(id: String) {
+        withContext(ioDispatcher) {
+            favoritesDao.deleteFavoriteById(id)
+        }
+    }
+
+    suspend fun deleteAllReminders() {
+        withContext(ioDispatcher) {
+            favoritesDao.deleteAllFavorites()
+        }
+    }
 }
