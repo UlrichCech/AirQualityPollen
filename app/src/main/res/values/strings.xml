@@ -29,5 +29,6 @@
     <string name="pollen_details_label_weed">Weed:</string>
     <string name="btn_save_favorite_location">Add to favorites</string>
     <string name="btn_add_favorite">New Favorite</string>
+    <string name="overview_list_icon">icon_location</string>
 
 </resources>

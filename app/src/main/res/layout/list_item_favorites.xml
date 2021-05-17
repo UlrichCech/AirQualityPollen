@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="favorite"
+            type="com.example.android.airqualitypollen.business.favorites.entity.FavoriteDTO" />
+
+        <variable
+            name="clickListener"
+            type="com.example.android.airqualitypollen.presentation.favorites.FavoriteListClickListener" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@{() -> clickListener.onClick(favorite)}"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/quality_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:contentDescription="@string/overview_list_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@drawable/ic_baseline_location_on_48" />
+
+        <TextView
+            android:id="@+id/tv_place_info"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="16sp"
+            app:placeInfo="@{favorite}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/quality_image"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="123456 (2001 KB67)" />
+
+        <TextView
+            android:id="@+id/tv_station_location"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="14sp"
+            app:stationLocation="@{favorite}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tv_place_info"
+            app:layout_constraintTop_toBottomOf="@+id/tv_place_info"
+            tools:text="10.7000, 53.7887" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

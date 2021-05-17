@@ -23,6 +23,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.android.airqualitypollen.business.favorites.entity.FavoriteDTO
 import com.example.android.airqualitypollen.databinding.FragmentOverviewBinding
 import com.example.android.airqualitypollen.platform.persistence.EntityManager
+import com.example.android.airqualitypollen.presentation.favorites.FavoriteListClickListener
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
@@ -59,6 +60,9 @@ class OverviewFragment : Fragment() {
         _binding = FragmentOverviewBinding.inflate(inflater, container, false)
         _binding!!.viewModel = viewModel
         _binding!!.lifecycleOwner = viewLifecycleOwner
+        binding.favoritesRV.adapter = OverviewFavoritesListAdapter(FavoriteListClickListener {
+            Log.i("UCE", "PlaceInfo: ${it.placeInfo}")
+        })
         requestForegroundPermissions()
         checkDeviceLocationSettings(true)
         return binding.root

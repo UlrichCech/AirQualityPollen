@@ -18,8 +18,13 @@
             android:id="@+id/favoritesRV"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/btnCurrentLocation"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:favoritesList="@{viewModel.favoritesList}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@+id/btnAddFavorite"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/list_item_favorites" />
 
         <Button
             android:id="@+id/btnAddFavorite"
