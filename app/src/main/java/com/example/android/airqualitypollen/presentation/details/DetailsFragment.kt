@@ -58,7 +58,7 @@ class DetailsFragment : Fragment() {
         })
 
         TabLayoutMediator(binding.tabLayout, binding.detailsViewPager) {
-                tab, position -> tab.text = getTabText(position);
+                tab, position -> tab.text = getTabText(position)
         }.attach()
 
         return binding.root
@@ -78,17 +78,6 @@ class DetailsFragment : Fragment() {
         binding.buttonSecond.setOnClickListener {
             findNavController().navigate(DetailsFragmentDirections.actionDetailsFragmentToOverviewFragment())
         }
-//        viewModel.selectedGeoLocation.observe(viewLifecycleOwner, { geoLocation ->
-//            viewModel.fetchAirQualityAndPollen(geoLocation)
-//        })
-//        viewModel.currentAirQuality.observe(viewLifecycleOwner, { airQuality ->
-//            Log.i("UCE-AIR", airQuality.toString())
-//        })
-//        viewModel.currentPollen.observe(viewLifecycleOwner, { pollen ->
-//            Log.i("UCE-AIR", pollen.toString())
-//        })
-    //        viewModel.updateSelectedLocation(DetailsFragmentArgs.fromBundle(requireArguments()).selectedGeoLocation)
-
     }
 
     override fun onDestroyView() {

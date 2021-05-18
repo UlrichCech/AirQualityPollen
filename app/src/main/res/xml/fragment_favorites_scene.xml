@@ -8,6 +8,17 @@
             android:layout_height="50dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
+
+        <Constraint android:id="@+id/save_location_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/secondaryColor"
+            android:text="@string/btn_save_favorite_location"
+            app:visibilityMode="ignore"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
     </ConstraintSet>
 
     <ConstraintSet android:id="@+id/end">
@@ -16,6 +27,16 @@
             android:layout_height="match_parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <Constraint android:id="@+id/save_location_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/secondaryColor"
+            android:text="@string/btn_save_favorite_location"
+            app:visibilityMode="ignore"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
     </ConstraintSet>
 
     <Transition

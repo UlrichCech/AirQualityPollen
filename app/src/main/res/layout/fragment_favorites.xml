@@ -29,6 +29,7 @@
             android:background="@color/secondaryColor"
             android:text="@string/btn_save_favorite_location"
             android:visibility="gone"
+            app:saveButtonVisibleIfNotNull="@{viewModel.selectedLatLng}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

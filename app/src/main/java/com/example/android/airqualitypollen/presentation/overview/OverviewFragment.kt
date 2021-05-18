@@ -13,10 +13,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -57,6 +57,9 @@ class OverviewFragment : Fragment() {
         _binding = FragmentOverviewBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
+        viewModel.showErrorMessage.observe(viewLifecycleOwner, {
+            Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+        })
         val overviewFavoritesListAdapter =
             OverviewFavoritesListAdapter(viewModel, FavoriteListClickListener { favorite ->
                 viewModel.updateSelectedFavorite(favorite)
@@ -73,7 +76,7 @@ class OverviewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.navigateToDetails.observe(viewLifecycleOwner,
-            Observer<Boolean> { shouldNavigateToDetails ->
+            { shouldNavigateToDetails ->
                 if (shouldNavigateToDetails == true) {
                     findNavController().navigate(
                         OverviewFragmentDirections.actionOverviewFragmentToDetailsFragment(viewModel.selectedGeoLocation.value, viewModel.selectedFavorite.value))
@@ -81,7 +84,7 @@ class OverviewFragment : Fragment() {
                 }
             })
         viewModel.navigateToAddFavorite.observe(viewLifecycleOwner,
-            Observer<Boolean> { shouldNavigateToAddFavorite ->
+            { shouldNavigateToAddFavorite ->
                 if (shouldNavigateToAddFavorite == true) {
                     findNavController().navigate(
                         OverviewFragmentDirections.actionOverviewFragmentToFavoritesFragment())
@@ -102,11 +105,6 @@ class OverviewFragment : Fragment() {
         _binding = null
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        //make sure to clear the view model after destroy, as it's a single view model.
-    }
-
     private fun foregroundLocationPermissionApproved(): Boolean {
         return (
                 PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(
@@ -125,31 +123,12 @@ class OverviewFragment : Fragment() {
         ActivityCompat.requestPermissions(requireActivity(), permissionArray, resultCode)
     }
 
-//    private fun requestBackgroundPermissions() {
-//        //Check if the permission have been already approved, if so we don't ask again and return
-//        if (foregroundAndBackgroundLocationPermissionApproved()) {
-//            return
-//        }
-//        var permissionArray = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
-//        val resultCode = when {
-//            runningQorLater -> {
-//                permissionArray += Manifest.permission.ACCESS_BACKGROUND_LOCATION
-//                REQUEST_FOREGROUND_AND_BACKGROUND_PERMISSION_RESULT_CODE
-//            }
-//            else -> REQUEST_FOREGROUND_ONLY_PERMISSION_REQUEST_CODE
-//        }
-//        Log.d(TAG, "Request Foreground only location permission")
-//        ActivityCompat.requestPermissions(requireActivity(), permissionArray, resultCode)
-//    }
-
     @SuppressLint("MissingPermission")
     private fun checkDeviceLocationSettings(resolve: Boolean = true) {
         val locationRequest = LocationRequest.create().apply {
             priority = LocationRequest.PRIORITY_LOW_POWER
         }
         val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
-        //LocationServices to get the Settings Client and create a val
-        // called locationSettingsResponseTask to check the location settings
         val settingsClient = LocationServices.getSettingsClient(requireActivity())
         val locationSettingsResponseTask = settingsClient.checkLocationSettings(builder.build())
 
@@ -161,15 +140,10 @@ class OverviewFragment : Fragment() {
                         REQUEST_TURN_LOCATION_ON
                     )
                 } catch (sendEx: IntentSender.SendIntentException) {
-                    Log.d(TAG, "Error getting location Settings" + sendEx.message)
+                    viewModel.showErrorMessage.postValue("Error getting location Settings" + sendEx.message)
                 }
             } else {
-//                Snackbar.make(
-//                    binding.saveReminderLayout,
-//                    com.google.android.gms.location.R.string.location_required_error, Snackbar.LENGTH_INDEFINITE
-//                ).setAction(android.R.string.ok) {
-//                    checkDeviceLocationSettings()
-//                }.show()
+                viewModel.showErrorMessage.postValue("No location available!")
             }
         }
         locationSettingsResponseTask.addOnCompleteListener {
@@ -202,23 +176,6 @@ class OverviewFragment : Fragment() {
     private fun requestLocationPermission() {
         requestPermissions(arrayOf(LOCATION_PERMISSION), LOCATION_PERMISSION_REQUEST)
     }
-
-//    private fun startLocationUpdates(fusedLocationClient: FusedLocationProviderClient) {
-//        // if we don't have permission ask for it and wait until the user grants it
-//        if (ContextCompat.checkSelfPermission(
-//                requireContext(), LOCATION_PERMISSION) != PackageManager.PERMISSION_GRANTED) {
-//            requestLocationPermission()
-//            return
-//        }
-//        val request = LocationRequest().setPriority(LocationRequest.PRIORITY_LOW_POWER)
-//        val callback = object: LocationCallback() {
-//            override fun onLocationResult(locationResult: LocationResult?) {
-//                val location = locationResult?.lastLocation ?: return
-//                viewModel.updateSelectedLocation(location)
-//            }
-//        }
-//        fusedLocationClient.requestLocationUpdates(request, callback, null)
-//    }
 
 }
 

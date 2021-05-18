@@ -7,9 +7,11 @@ import com.google.android.gms.maps.model.Marker
 
 class FavoritesViewModel : ViewModel() {
 
-    var currentMarker: Marker? = null
+    private var currentMarker: Marker? = null
 
     val selectedLatLng = MutableLiveData<LatLng>()
+
+    val showErrorMessage: MutableLiveData<String> = MutableLiveData()
 
 
     fun setNewSelectedMarker(newMarker: Marker?) {

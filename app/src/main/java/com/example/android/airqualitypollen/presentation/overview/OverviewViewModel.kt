@@ -33,6 +33,8 @@ class OverviewViewModel: ViewModel() {
     val favoritesList: LiveData<List<FavoriteDTO>>
         get() = _favoritesList
 
+    val showErrorMessage: MutableLiveData<String> = MutableLiveData()
+
 
     init {
         viewModelScope.launch {

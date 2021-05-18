@@ -43,13 +43,6 @@ class OverviewFavoritesListAdapter(
             binding.executePendingBindings()
         }
 
-        companion object {
-            fun from(parent: ViewGroup): ViewHolder {
-                val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = ListItemFavoritesBinding.inflate(layoutInflater, parent, false)
-                return ViewHolder(binding)
-            }
-        }
     }
 }
 
