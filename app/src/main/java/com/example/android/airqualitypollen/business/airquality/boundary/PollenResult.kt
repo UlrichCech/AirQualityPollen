@@ -4,6 +4,9 @@ import android.os.Parcelable
 import com.example.android.airqualitypollen.business.airquality.entity.Pollen
 import kotlinx.parcelize.Parcelize
 
+/**
+ * The main data class for JSON-result of the AMBEE-Endpoint for getting the pollen data.
+ */
 @Parcelize
 data class PollenResult(
     val message: String,
@@ -20,3 +23,22 @@ data class PollenResult(
     }
 
 }
+
+
+//{
+//    "message": "success",
+//    "data": [
+//        {
+//            "Count": {
+//                "grass_pollen": 25,
+//                "tree_pollen": 16,
+//                "weed_pollen": 375
+//            },
+//            "Risk": {
+//                "grass_pollen": "Low",
+//                "tree_pollen": "Low",
+//                "weed_pollen": "High"
+//            }
+//        }
+//    ]
+//}

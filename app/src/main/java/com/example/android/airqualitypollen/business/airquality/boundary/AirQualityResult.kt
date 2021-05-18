@@ -4,6 +4,9 @@ import android.os.Parcelable
 import com.example.android.airqualitypollen.business.airquality.entity.AirQuality
 import kotlinx.parcelize.Parcelize
 
+/**
+ * The main data class for JSON-result of the AMBEE-Endpoint for getting the air-quality.
+ */
 @Parcelize
 data class AirQualityResult(val message: String,
                             val stations: List<Station>) : Parcelable {

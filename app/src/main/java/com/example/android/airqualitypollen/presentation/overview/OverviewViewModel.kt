@@ -1,6 +1,7 @@
 package com.example.android.airqualitypollen.presentation.overview
 
 import android.location.Location
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -36,18 +37,33 @@ class OverviewViewModel: ViewModel() {
     init {
         viewModelScope.launch {
             try {
-//                _status.value = MarsApiStatus.LOADING
                 val listResult = EntityManager.getFavoriteDao().getAllFavorites()
-//                _status.value = MarsApiStatus.DONE
                 if (listResult.isNotEmpty()) {
                     _favoritesList.value = listResult
                 }
             } catch (e: Exception) {
-//                _status.value = MarsApiStatus.ERROR
                 _favoritesList.value = ArrayList()
             }
         }
     }
+
+
+    fun deleteFavorite(id: String) {
+        viewModelScope.launch {
+            try {
+                EntityManager.getFavoriteDao().deleteFavoriteById(id)
+                val listResult = EntityManager.getFavoriteDao().getAllFavorites()
+                if (listResult.isNotEmpty()) {
+                    _favoritesList.value = listResult
+                } else {
+                    _favoritesList.value = ArrayList()
+                }
+            } catch (e: Exception) {
+                Log.e("UCE", e.message, e)
+            }
+        }
+    }
+
 
 
     fun updateSelectedLocation(location: Location) {

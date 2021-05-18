@@ -1,10 +1,9 @@
 package com.example.android.airqualitypollen.business.airquality.entity
 
 import android.os.Parcelable
-import androidx.room.Entity
 import kotlinx.parcelize.Parcelize
 
-@Entity @Parcelize
+@Parcelize
 data class AirQuality(
                       val no2: Double?,
                       val pm10: Double?,

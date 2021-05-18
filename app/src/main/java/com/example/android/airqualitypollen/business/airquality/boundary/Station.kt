@@ -4,6 +4,9 @@ import android.os.Parcelable
 import com.squareup.moshi.Json
 import kotlinx.parcelize.Parcelize
 
+/**
+ * Data class for JSON-result of the AMBEE-Endpoint for getting the air-quality data.
+ */
 @Parcelize
 data class Station(@Json(name = "NO2") val no2: Double?,
                    @Json(name = "PM10") val pm10: Double?,

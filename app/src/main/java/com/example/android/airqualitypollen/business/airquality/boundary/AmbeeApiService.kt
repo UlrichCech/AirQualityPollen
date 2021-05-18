@@ -11,8 +11,6 @@ import retrofit2.http.Query
 
 private const val BASE_URL = "https://api.ambeedata.com"
 
-//private const val AMBEE_API_KEY = "eRGsr21sQP8r1xOLvEkXW6sk16XYCCFNM3Y7dgec"
-
 private val moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
         .build()

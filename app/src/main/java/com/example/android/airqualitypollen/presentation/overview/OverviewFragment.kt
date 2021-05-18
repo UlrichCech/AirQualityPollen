@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.android.airqualitypollen.databinding.FragmentOverviewBinding
 import com.example.android.airqualitypollen.presentation.favorites.FavoriteListClickListener
 import com.google.android.gms.common.api.ResolvableApiException
@@ -54,13 +55,16 @@ class OverviewFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         _binding = FragmentOverviewBinding.inflate(inflater, container, false)
-        _binding!!.viewModel = viewModel
-        _binding!!.lifecycleOwner = viewLifecycleOwner
-        binding.favoritesRV.adapter = OverviewFavoritesListAdapter(FavoriteListClickListener { favorite ->
-            viewModel.updateSelectedFavorite(favorite)
-            viewModel.onNavigateToDetailsClicked()
-//            Log.i("UCE", "PlaceInfo: ${favorite.placeInfo}")
-        })
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+        val overviewFavoritesListAdapter =
+            OverviewFavoritesListAdapter(viewModel, FavoriteListClickListener { favorite ->
+                viewModel.updateSelectedFavorite(favorite)
+                viewModel.onNavigateToDetailsClicked()
+            })
+        binding.favoritesRV.adapter = overviewFavoritesListAdapter
+        val deleteSwiper = ItemTouchHelper(OverviewFavoritesItemSwiper(overviewFavoritesListAdapter))
+        deleteSwiper.attachToRecyclerView(binding.favoritesRV)
         requestForegroundPermissions()
         checkDeviceLocationSettings(true)
         return binding.root
@@ -91,26 +95,6 @@ class OverviewFragment : Fragment() {
         binding.btnAddFavorite.setOnClickListener {
             requestLastLocationOrStartLocationUpdates(TargetNavigation.ADD_FAVORITE)
         }
-//        viewModel.viewModelScope.launch {
-//            val allFavorites = EntityManager.getFavoriteDao().getAllFavorites()
-//            Log.i("UCE_DB", "Anzahl favorites ${allFavorites.size}")
-//
-//            val favoriteDTO = FavoriteDTO(53.699500, 10.761190)
-//            val favorite = favoriteDTO
-//
-//            EntityManager.getFavoriteDao().saveFavorite(favorite)
-//
-//            val favorite2 = EntityManager.getFavoriteDao().getFavoriteById(favorite.id)
-//            Log.i("UCE_DB", favorite2.toString())
-//
-//            Log.i("UCE_DB", "Anzahl favorites ${EntityManager.getFavoriteDao().getAllFavorites()}")
-//
-//            EntityManager.getFavoriteDao().deleteAllFavorites()
-//
-//            Log.i("UCE_DB", "Anzahl favorites ${EntityManager.getFavoriteDao().getAllFavorites()}")
-//
-//            val a: Int
-//        }
     }
 
     override fun onDestroyView() {

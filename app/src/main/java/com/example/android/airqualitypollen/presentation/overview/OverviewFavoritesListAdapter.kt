@@ -9,7 +9,10 @@ import com.example.android.airqualitypollen.business.favorites.entity.FavoriteDT
 import com.example.android.airqualitypollen.databinding.ListItemFavoritesBinding
 import com.example.android.airqualitypollen.presentation.favorites.FavoriteListClickListener
 
-class OverviewFavoritesListAdapter(private val clickListener: FavoriteListClickListener) :
+class OverviewFavoritesListAdapter(
+    private val viewModel: OverviewViewModel,
+    private val clickListener: FavoriteListClickListener
+) :
     ListAdapter<FavoriteDTO, OverviewFavoritesListAdapter.ViewHolder>(FavoriteDiffCallback()) {
 
 
@@ -22,6 +25,12 @@ class OverviewFavoritesListAdapter(private val clickListener: FavoriteListClickL
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
         holder.bind(clickListener, item)
+    }
+
+    fun deleteFavorite(position: Int) {
+        val item = getItem(position)
+        viewModel.deleteFavorite(item.id)
+        notifyItemRemoved(position)
     }
 
 
