@@ -21,4 +21,5 @@ class FragmentAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle,
             else -> DetailsFragmentAirQuality.newInstance(geoLocation, favorite)
         }
     }
+
 }
