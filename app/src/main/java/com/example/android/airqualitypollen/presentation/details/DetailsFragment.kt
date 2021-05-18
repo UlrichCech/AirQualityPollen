@@ -1,7 +1,6 @@
 package com.example.android.airqualitypollen.presentation.details
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,22 +34,23 @@ class DetailsFragment : Fragment() {
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
-
         fragmentAdapter =
             FragmentAdapter(requireActivity().supportFragmentManager,
                             requireActivity().lifecycle,
-                            DetailsFragmentArgs.fromBundle(requireArguments()).selectedGeoLocation)
+                            DetailsFragmentArgs.fromBundle(requireArguments()).selectedGeoLocation,
+                            DetailsFragmentArgs.fromBundle(requireArguments()).selectedFavorite)
         binding.detailsViewPager.adapter = fragmentAdapter
-
         binding.tabLayout.addOnTabSelectedListener(object : OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 _binding?.detailsViewPager?.currentItem = tab.position
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {
+                // currently not needed/implemented
             }
 
             override fun onTabReselected(tab: TabLayout.Tab) {
+                // currently not needed/implemented
             }
         })
         return binding.root
@@ -64,14 +64,13 @@ class DetailsFragment : Fragment() {
 //        viewModel.selectedGeoLocation.observe(viewLifecycleOwner, { geoLocation ->
 //            viewModel.fetchAirQualityAndPollen(geoLocation)
 //        })
-        viewModel.currentAirQuality.observe(viewLifecycleOwner, { airQuality ->
-            Log.i("UCE-AIR", airQuality.toString())
-        })
-        viewModel.currentPollen.observe(viewLifecycleOwner, { pollen ->
-            Log.i("UCE-AIR", pollen.toString())
-        })
-
-//        viewModel.updateSelectedLocation(DetailsFragmentArgs.fromBundle(requireArguments()).selectedGeoLocation)
+//        viewModel.currentAirQuality.observe(viewLifecycleOwner, { airQuality ->
+//            Log.i("UCE-AIR", airQuality.toString())
+//        })
+//        viewModel.currentPollen.observe(viewLifecycleOwner, { pollen ->
+//            Log.i("UCE-AIR", pollen.toString())
+//        })
+    //        viewModel.updateSelectedLocation(DetailsFragmentArgs.fromBundle(requireArguments()).selectedGeoLocation)
 
     }
 

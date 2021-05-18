@@ -1,18 +1,19 @@
 package com.example.android.airqualitypollen.presentation.details
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.android.airqualitypollen.databinding.FragmentDetailsAirQualityBinding
+import com.example.android.airqualitypollen.business.favorites.entity.FavoriteDTO
 import com.example.android.airqualitypollen.business.location.boundary.GeoLocation
+import com.example.android.airqualitypollen.databinding.FragmentDetailsAirQualityBinding
 
 /**
  * The fragment for providing the AirQuality-data in the ViewPager.
  */
-class DetailsFragmentAirQuality(val geoLocation: GeoLocation) : Fragment() {
+class DetailsFragmentAirQuality() : Fragment() {
 
     private var _binding: FragmentDetailsAirQualityBinding? = null
 
@@ -23,8 +24,15 @@ class DetailsFragmentAirQuality(val geoLocation: GeoLocation) : Fragment() {
         ViewModelProvider(this).get(DetailsAirQualityViewModel::class.java)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
+    private var geoLocation: GeoLocation? = GeoLocation()
+    private var favorite: FavoriteDTO? = FavoriteDTO()
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        geoLocation = arguments?.getParcelable("geoLocation")
+        favorite = arguments?.getParcelable("favorite")
         // Inflate the layout for this fragment
         _binding = FragmentDetailsAirQualityBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
@@ -34,11 +42,26 @@ class DetailsFragmentAirQuality(val geoLocation: GeoLocation) : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel.selectedGeoLocation.observe(viewLifecycleOwner, { geoLocation ->
-            viewModel.fetchAirQuality(geoLocation)
+        viewModel.fetchAirQuality.observe(viewLifecycleOwner, {
+            if (it) {
+                viewModel.fetchAirQuality(favorite, geoLocation)
+            }
         })
-
-        viewModel.updateSelectedLocation(geoLocation)
+        viewModel.prepareData(favorite)
     }
+
+    companion object {
+        fun newInstance(
+            geoLocation: GeoLocation?,
+            favorite: FavoriteDTO?
+        ): DetailsFragmentAirQuality {
+            val args = Bundle()
+            args.putParcelable("geoLocation", geoLocation)
+            args.putParcelable("favorite", favorite)
+            val newFragment = DetailsFragmentAirQuality()
+            newFragment.arguments = args
+            return newFragment
+        }
+    }
+
 }

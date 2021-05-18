@@ -40,11 +40,11 @@
             android:layout_marginEnd="16dp"
             android:textColor="@color/primaryTextColor"
             android:textSize="16sp"
-            app:placeInfo="@{favorite}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/quality_image"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="123456 (2001 KB67)" />
+            app:placeInfo="@{favorite}"
+            tools:text="Römnitz, 23909, Kreis Herzogtum Lasuenburg, Schleswig-Holstein, DE" />
 
         <TextView
             android:id="@+id/tv_station_location"

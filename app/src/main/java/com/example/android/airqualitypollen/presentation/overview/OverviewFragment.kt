@@ -18,17 +18,13 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
-import com.example.android.airqualitypollen.business.favorites.entity.FavoriteDTO
 import com.example.android.airqualitypollen.databinding.FragmentOverviewBinding
-import com.example.android.airqualitypollen.platform.persistence.EntityManager
 import com.example.android.airqualitypollen.presentation.favorites.FavoriteListClickListener
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
-import kotlinx.coroutines.launch
 
 
 /**
@@ -60,8 +56,10 @@ class OverviewFragment : Fragment() {
         _binding = FragmentOverviewBinding.inflate(inflater, container, false)
         _binding!!.viewModel = viewModel
         _binding!!.lifecycleOwner = viewLifecycleOwner
-        binding.favoritesRV.adapter = OverviewFavoritesListAdapter(FavoriteListClickListener {
-            Log.i("UCE", "PlaceInfo: ${it.placeInfo}")
+        binding.favoritesRV.adapter = OverviewFavoritesListAdapter(FavoriteListClickListener { favorite ->
+            viewModel.updateSelectedFavorite(favorite)
+            viewModel.onNavigateToDetailsClicked()
+//            Log.i("UCE", "PlaceInfo: ${favorite.placeInfo}")
         })
         requestForegroundPermissions()
         checkDeviceLocationSettings(true)
@@ -74,7 +72,7 @@ class OverviewFragment : Fragment() {
             Observer<Boolean> { shouldNavigateToDetails ->
                 if (shouldNavigateToDetails == true) {
                     findNavController().navigate(
-                        OverviewFragmentDirections.actionOverviewFragmentToDetailsFragment(viewModel.selectedGeoLocation.value!!))
+                        OverviewFragmentDirections.actionOverviewFragmentToDetailsFragment(viewModel.selectedGeoLocation.value, viewModel.selectedFavorite.value))
                     viewModel.onNavigateToDetailsFinished()
                 }
             })

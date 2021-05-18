@@ -1,15 +1,19 @@
 package com.example.android.airqualitypollen.business.favorites.entity
 
+import android.annotation.SuppressLint
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.android.airqualitypollen.business.airquality.entity.AirQuality
 import com.example.android.airqualitypollen.business.airquality.entity.Pollen
+import kotlinx.parcelize.Parcelize
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
 @Entity(tableName = "favorites")
+@Parcelize
 data class FavoriteDTO(
     @ColumnInfo(name = "latitude") var latitude: Double? = null,
     @ColumnInfo(name = "longitude") var longitude: Double? = null,
@@ -40,12 +44,13 @@ data class FavoriteDTO(
     @ColumnInfo(name = "risk_tree_pollen") var riskTreePollen: String? = null,
     @ColumnInfo(name = "risk_w3eed_pollen") var riskWeedPollen: String? = null,
     @PrimaryKey @ColumnInfo(name = "_id") val id: String = UUID.randomUUID().toString()
-) {
+) : Parcelable {
     fun updateAirQuality(airQuality: AirQuality) {
         placeInfo = createPlaceInfo(airQuality)
         no2 = airQuality.no2
         pm10 = airQuality.pm10
         pm25 = airQuality.pm25
+        co = airQuality.co
         so2 = airQuality.so2
         ozone = airQuality.ozone
         city = airQuality.city
@@ -72,6 +77,15 @@ data class FavoriteDTO(
         riskWeedPollen = pollen.riskWeedPollen
     }
 
+    fun getAirQualityData(): AirQuality {
+        return AirQuality(no2, pm10, pm25, co, so2, ozone, city, countryCode, division, lat, lng, placeName, postalCode, state, aqi, pollutant, concentration, category, fromTimestampToString(updatedAt))
+    }
+
+    fun getPollenData(): Pollen {
+        return Pollen(countGrassPollen, countTreePollen, countWeedPollen, riskGrassPollen, riskTreePollen, riskWeedPollen)
+    }
+
+
     private fun createPlaceInfo(airQuality: AirQuality): String {
         val data = ArrayList<String>()
         if (airQuality.placeName != null) {
@@ -92,18 +106,36 @@ data class FavoriteDTO(
         return data.joinToString(separator = ", ")
     }
 
-    private fun fromStringToTimestamp(value: String?): Date? {
-        val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-        return if (value != null) {
-            try {
-                return sdf.parse(value)
-            } catch (e: ParseException) {
-                e.printStackTrace()
+
+    companion object {
+        @SuppressLint("SimpleDateFormat")
+        fun fromStringToTimestamp(value: String?): Date? {
+            val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+            return if (value != null) {
+                try {
+                    return sdf.parse(value)
+                } catch (e: ParseException) {
+                    e.printStackTrace()
+                }
+                null
+            } else {
+                null
             }
-            null
-        } else {
-            null
+        }
+
+        @SuppressLint("SimpleDateFormat")
+        fun fromTimestampToString(date: Date?): String? {
+            val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+            return if (date != null) {
+                try {
+                    return sdf.format(date)
+                } catch (e: ParseException) {
+                    e.printStackTrace()
+                }
+                null
+            } else {
+                null
+            }
         }
     }
-
 }

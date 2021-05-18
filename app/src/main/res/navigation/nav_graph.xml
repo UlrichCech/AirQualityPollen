@@ -23,7 +23,8 @@
         android:name="com.example.android.airqualitypollen.presentation.details.DetailsFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_details">
-        <argument android:name="selectedGeoLocation" app:argType="com.example.android.airqualitypollen.business.location.boundary.GeoLocation" />
+        <argument android:name="selectedGeoLocation" app:argType="com.example.android.airqualitypollen.business.location.boundary.GeoLocation" app:nullable="true" />
+        <argument android:name="selectedFavorite" app:argType="com.example.android.airqualitypollen.business.favorites.entity.FavoriteDTO" app:nullable="true" />
         <action
             android:id="@+id/action_DetailsFragment_to_OverviewFragment"
             app:destination="@id/OverviewFragment" />

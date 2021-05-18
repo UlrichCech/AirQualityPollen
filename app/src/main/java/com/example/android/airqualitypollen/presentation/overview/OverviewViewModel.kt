@@ -16,6 +16,10 @@ class OverviewViewModel: ViewModel() {
     val selectedGeoLocation: LiveData<GeoLocation>
         get() = _selectedGeoLocation
 
+    private val _selectedFavorite = MutableLiveData<FavoriteDTO>()
+    val selectedFavorite: LiveData<FavoriteDTO>
+        get() = _selectedFavorite
+
     private val _navigateToDetails = MutableLiveData<Boolean>()
     val navigateToDetails: LiveData<Boolean>
         get() = _navigateToDetails
@@ -33,7 +37,7 @@ class OverviewViewModel: ViewModel() {
         viewModelScope.launch {
             try {
 //                _status.value = MarsApiStatus.LOADING
-                var listResult = EntityManager.getFavoriteDao().getAllFavorites()
+                val listResult = EntityManager.getFavoriteDao().getAllFavorites()
 //                _status.value = MarsApiStatus.DONE
                 if (listResult.isNotEmpty()) {
                     _favoritesList.value = listResult
@@ -48,6 +52,10 @@ class OverviewViewModel: ViewModel() {
 
     fun updateSelectedLocation(location: Location) {
         _selectedGeoLocation.value = GeoLocation(location.latitude, location.longitude)
+    }
+
+    fun updateSelectedFavorite(favorite: FavoriteDTO) {
+        _selectedFavorite.value = favorite
     }
 
     fun onNavigateToDetailsClicked() {
