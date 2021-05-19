@@ -20,12 +20,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
+import com.example.android.airqualitypollen.R
 import com.example.android.airqualitypollen.databinding.FragmentOverviewBinding
 import com.example.android.airqualitypollen.presentation.favorites.FavoriteListClickListener
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
+import com.squareup.picasso.Picasso
 
 
 /**
@@ -39,8 +41,6 @@ class OverviewFragment : Fragment() {
         val LOCATION_PERMISSION = "android.permission.ACCESS_FINE_LOCATION"
     }
 
-//    private val runningQorLater = android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q
-
     private var _binding: FragmentOverviewBinding? = null
 
     // This property is only valid between onCreateView and onDestroyView.
@@ -50,13 +50,23 @@ class OverviewFragment : Fragment() {
         ViewModelProvider(this).get(OverviewViewModel::class.java)
     }
 
-
+    private val picasso: Picasso by lazy {
+        Picasso.get()
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         _binding = FragmentOverviewBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
+
+        viewModel.pictureOfDay.observe(viewLifecycleOwner, {
+            picasso
+                .load(viewModel.pictureOfDay.value!!.results[0].links.download)
+                .placeholder(R.drawable.ic_baseline_perm_media_24)
+                .error(R.drawable.ic_connection_error)
+                .into(binding.ivNaturePictureOfDay)
+        })
         viewModel.showErrorMessage.observe(viewLifecycleOwner, {
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
         })

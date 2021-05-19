@@ -51,7 +51,7 @@ class DetailsAirQualityViewModel : ViewModel() {
                 val newAirQualityData = AmbeeApi.RETROFIT_SERVICE.getAirQualityForCurrentLocation(
                     lat.toString(),
                     lng.toString(),
-                    GlobalAppConfiguration.ambeeApiKey
+                    GlobalAppConfiguration.ambeeApiKey!!
                 ).toEntity()
                 _currentAirQuality.value = newAirQualityData
                 // update the favorite data

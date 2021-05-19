@@ -53,7 +53,7 @@ class DetailsPollenViewModel : ViewModel() {
                     AmbeeApi.RETROFIT_SERVICE.getPollenForCurrentLocation(
                         lat.toString(),
                         lng.toString(),
-                        GlobalAppConfiguration.ambeeApiKey
+                        GlobalAppConfiguration.ambeeApiKey!!
                     ).toEntity()
                 _currentPollen.value = pollenForCurrentLocation
                 if (favorite != null) {

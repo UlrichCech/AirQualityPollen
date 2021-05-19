@@ -22,12 +22,13 @@ class MainActivity : AppCompatActivity() {
 
         // read the AMBEE-API-Key from launch-flags: -e "AMBEE_API_KEY" "<CUSTOM-API-KEY>"
 
-        val key = if (intent?.extras != null) {
-            intent?.extras?.getString("AMBEE_API_KEY", "")
+        if (intent?.extras != null) {
+            GlobalAppConfiguration.ambeeApiKey = intent?.extras?.getString("AMBEE_API_KEY", "")
+            GlobalAppConfiguration.unsplashApiKey = intent?.extras?.getString("UNSPLASH_API_KEY", "")
         } else {
-            ""
+            GlobalAppConfiguration.ambeeApiKey = ""
+            GlobalAppConfiguration.unsplashApiKey = ""
         }
-        GlobalAppConfiguration.ambeeApiKey = key!!
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)

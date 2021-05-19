@@ -14,6 +14,20 @@
         android:layout_height="match_parent"
         tools:context=".presentation.overview.OverviewFragment">
 
+        <ImageView
+            android:id="@+id/iv_nature_picture_of_day"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/nature_picture_of_the_day"
+            android:scaleType="fitCenter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@android:drawable/ic_menu_gallery"
+            app:unsplashApiStatus="@{viewModel.unsplashApiStatus}" />
+
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/favoritesRV"
             android:layout_width="match_parent"
@@ -22,8 +36,10 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toTopOf="@+id/btnAddFavorite"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_nature_picture_of_day"
+            app:layout_constraintVertical_bias="1.0"
             tools:listitem="@layout/list_item_favorites" />
 
         <Button

@@ -6,8 +6,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.android.airqualitypollen.business.configuration.GlobalAppConfiguration
 import com.example.android.airqualitypollen.business.favorites.entity.FavoriteDTO
 import com.example.android.airqualitypollen.business.location.boundary.GeoLocation
+import com.example.android.airqualitypollen.business.nature.boundary.SearchResult
+import com.example.android.airqualitypollen.business.nature.boundary.UnsplashApi
+import com.example.android.airqualitypollen.business.nature.boundary.UnsplashApiStatus
 import com.example.android.airqualitypollen.platform.persistence.EntityManager
 import kotlinx.coroutines.launch
 
@@ -33,6 +37,17 @@ class OverviewViewModel: ViewModel() {
     val favoritesList: LiveData<List<FavoriteDTO>>
         get() = _favoritesList
 
+    private val _pictureOfDay = MutableLiveData<SearchResult>()
+    val pictureOfDay: LiveData<SearchResult>
+        get() = _pictureOfDay
+
+    private val _unsplashApiStatus = MutableLiveData<UnsplashApiStatus>()
+    val unsplashApiStatus: LiveData<UnsplashApiStatus>
+        get() = _unsplashApiStatus
+
+
+
+
     val showErrorMessage: MutableLiveData<String> = MutableLiveData()
 
 
@@ -47,6 +62,7 @@ class OverviewViewModel: ViewModel() {
                 _favoritesList.value = ArrayList()
             }
         }
+        fetchPictureOfTheDay()
     }
 
 
@@ -66,6 +82,25 @@ class OverviewViewModel: ViewModel() {
         }
     }
 
+
+    private fun fetchPictureOfTheDay() {
+        viewModelScope.launch {
+            try {
+                _unsplashApiStatus.value = UnsplashApiStatus.LOADING
+                val searchResultForPictureOfDay =
+                    UnsplashApi.RETROFIT_SERVICE.searchLatestPicture(
+                        GlobalAppConfiguration.unsplashApiKey!!,
+                        "nature images",
+                        1,
+                        "landscape",
+                        "latest")
+                _pictureOfDay.value = searchResultForPictureOfDay
+                _unsplashApiStatus.value = UnsplashApiStatus.DONE
+            } catch (e: Exception) {
+                _unsplashApiStatus.value = UnsplashApiStatus.ERROR
+            }
+        }
+    }
 
 
     fun updateSelectedLocation(location: Location) {

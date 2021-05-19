@@ -28,5 +28,6 @@
     <string name="btn_add_favorite">Add Favorite</string>
     <string name="overview_list_icon">icon_location</string>
     <string name="no_fine_location_permission">Location permission was not granted!</string>
+    <string name="nature_picture_of_the_day">Nature picture of the day</string>
 
 </resources>

@@ -75,7 +75,7 @@ class FavoritesFragment : Fragment(), OnMapReadyCallback {
                     try {
                         val airQuality =
                             AmbeeApi.RETROFIT_SERVICE.getAirQualityForCurrentLocation(
-                                newFavorite.latitude.toString(), newFavorite.longitude.toString(), GlobalAppConfiguration.ambeeApiKey).toEntity()
+                                newFavorite.latitude.toString(), newFavorite.longitude.toString(), GlobalAppConfiguration.ambeeApiKey!!).toEntity()
                         newFavorite.updateAirQuality(airQuality)
                     } catch (e: Exception) {
                         Log.e("UCE", e.message, e)
@@ -87,7 +87,7 @@ class FavoritesFragment : Fragment(), OnMapReadyCallback {
                             AmbeeApi.RETROFIT_SERVICE.getPollenForCurrentLocation(
                                 newFavorite.latitude.toString(),
                                 newFavorite.longitude.toString(),
-                                GlobalAppConfiguration.ambeeApiKey
+                                GlobalAppConfiguration.ambeeApiKey!!
                             )
                         newFavorite.updatePollen(pollen.toEntity())
                     } catch (e: Exception) {
