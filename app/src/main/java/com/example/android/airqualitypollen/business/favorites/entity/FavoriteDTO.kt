@@ -110,7 +110,7 @@ data class FavoriteDTO(
     companion object {
         @SuppressLint("SimpleDateFormat")
         fun fromStringToTimestamp(value: String?): Date? {
-            val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+            val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
             return if (value != null) {
                 try {
                     return sdf.parse(value)

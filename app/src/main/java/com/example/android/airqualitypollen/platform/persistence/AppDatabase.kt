@@ -7,7 +7,7 @@ import com.example.android.airqualitypollen.business.favorites.boundary.Favorite
 import com.example.android.airqualitypollen.business.favorites.entity.FavoriteDTO
 
 /**
- * The Room Database that contains the reminders table.
+ * The Room Database.
  */
 @Database(entities = [FavoriteDTO::class], version = 1, exportSchema = false)
 @TypeConverters(PersistentConverters::class)

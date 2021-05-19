@@ -92,11 +92,12 @@ class OverviewFragment : Fragment() {
                 }
             })
 
-        binding.btnCurrentLocation.setOnClickListener {
-            requestLastLocationOrStartLocationUpdates(TargetNavigation.DETAILS)
-        }
         binding.btnAddFavorite.setOnClickListener {
             requestLastLocationOrStartLocationUpdates(TargetNavigation.ADD_FAVORITE)
+        }
+        binding.btnCurrentLocation.setOnClickListener {
+            viewModel.updateSelectedFavorite(null)
+            requestLastLocationOrStartLocationUpdates(TargetNavigation.DETAILS)
         }
     }
 
@@ -180,7 +181,8 @@ class OverviewFragment : Fragment() {
 }
 
 
-class FindLocationAndRedirectListener(private val viewModel: OverviewViewModel, private val targetNavigation: TargetNavigation) : android.location.LocationListener {
+class FindLocationAndRedirectListener(private val viewModel: OverviewViewModel,
+                                      private val targetNavigation: TargetNavigation) : android.location.LocationListener {
 
     override fun onLocationChanged(location: Location) {
         viewModel.updateSelectedLocation(location)

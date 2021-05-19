@@ -17,8 +17,8 @@ class OverviewViewModel: ViewModel() {
     val selectedGeoLocation: LiveData<GeoLocation>
         get() = _selectedGeoLocation
 
-    private val _selectedFavorite = MutableLiveData<FavoriteDTO>()
-    val selectedFavorite: LiveData<FavoriteDTO>
+    private val _selectedFavorite = MutableLiveData<FavoriteDTO?>()
+    val selectedFavorite: LiveData<FavoriteDTO?>
         get() = _selectedFavorite
 
     private val _navigateToDetails = MutableLiveData<Boolean>()
@@ -72,7 +72,7 @@ class OverviewViewModel: ViewModel() {
         _selectedGeoLocation.value = GeoLocation(location.latitude, location.longitude)
     }
 
-    fun updateSelectedFavorite(favorite: FavoriteDTO) {
+    fun updateSelectedFavorite(favorite: FavoriteDTO?) {
         _selectedFavorite.value = favorite
     }
 

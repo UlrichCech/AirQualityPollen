@@ -12,7 +12,6 @@ import com.example.android.airqualitypollen.business.favorites.entity.FavoriteDT
 import com.example.android.airqualitypollen.business.location.boundary.GeoLocation
 import com.example.android.airqualitypollen.platform.persistence.EntityManager
 import kotlinx.coroutines.launch
-import java.util.*
 
 class DetailsAirQualityViewModel : ViewModel() {
 
@@ -29,7 +28,7 @@ class DetailsAirQualityViewModel : ViewModel() {
         if (favorite == null) {
             // fetch values and show for current location (no persistence)
             _fetchAirQuality.value = true
-        } else if (! isLastUpdateOnSameDay(favorite.updatedAt)) {
+        } else if (! DetailsViewModel.isLastUpdateOnSameDayOrYesterday(favorite.updatedAt)) {
             // fetch and update new values
             _fetchAirQuality.value = true
         } else {
@@ -57,7 +56,6 @@ class DetailsAirQualityViewModel : ViewModel() {
                 _currentAirQuality.value = newAirQualityData
                 // update the favorite data
                 if (favorite != null) {
-                    Log.i("UCE", "Should update the favorite.")
                     favorite.updateAirQuality(newAirQualityData)
                     EntityManager.getFavoriteDao().saveFavorite(favorite)
                 }
@@ -68,17 +66,6 @@ class DetailsAirQualityViewModel : ViewModel() {
                 Log.e("UCE", e.message, e)
             }
         }
-    }
-
-    private fun isLastUpdateOnSameDay(updatedAt: Date?): Boolean {
-        if (updatedAt == null) return false
-        val currentTime = GregorianCalendar()
-        currentTime.time = Date()
-        val lastUpdate = GregorianCalendar()
-        lastUpdate.time = updatedAt
-        return currentTime.get(Calendar.YEAR) == lastUpdate.get(Calendar.YEAR)
-                && currentTime.get(Calendar.MONTH) == lastUpdate.get(Calendar.MONTH)
-                && currentTime.get(Calendar.DAY_OF_MONTH) == lastUpdate.get(Calendar.DAY_OF_MONTH)
     }
 
 }
