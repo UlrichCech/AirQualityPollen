@@ -32,7 +32,7 @@
     <fragment
         android:id="@+id/favoritesFragment"
         android:name="com.example.android.airqualitypollen.presentation.favorites.FavoritesFragment"
-        android:label="FavoritesFragment" >
+        android:label="Select New Favorite Location" >
         <action
             android:id="@+id/action_favoritesFragment_to_OverviewFragment"
             app:destination="@id/OverviewFragment" />
